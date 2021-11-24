@@ -1,13 +1,21 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import {useParams } from 'react-router-dom';
+import { ProjectContext , httpProjectAction} from "../../context/ProjectContext"
+import ProjectModel from '../../models/ProjectModel'
 
 
 const TaskView = () => {
     const params =useParams();
+    const [projects,dispatchProject]= useContext(ProjectContext);
+    const [projectState,setProjectState] = useState();
 
     useEffect(() => {
-        console.log(params)
-    }, [])
+        let p = projects.find((project)=>(project._id.toString()===params.project_id.toString()))
+        // console.log(p)
+        setProjectState(p)
+        // console.log(projectState.name)
+        console.log(ProjectModel)
+    }, [params])
 
 const changeViewStructure =()=>{
     let data =''
@@ -41,7 +49,12 @@ const changeViewStructure =()=>{
                     </div>                
                     <ul id="#structure" className="structure d-flex flex-row justify-content-between overflow-auto">
                         
-            <h3>hello from tview</h3>
+                        {
+                            projectState ?
+                            <h3>{projectState.name}</h3>
+                            :null
+                        }
+                    
 {/* 
                             {{#each data.current_project.active_status_template.statuses}}
     <li class="col"  >

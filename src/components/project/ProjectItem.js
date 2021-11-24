@@ -26,7 +26,7 @@ const ProjectItem = ({project}) => {
     return (
         <>
             {projectState?
-                <div>
+                <div className="m-2">
                     <Link to ={`/dashboard/space/${projectState.workspace._id}/project/${projectState._id}`} className="button m-1 text-decoration-none">
                         {projectState.name}
                     </Link>
