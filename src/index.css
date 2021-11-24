@@ -1,13 +1,344 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --bg-primary: rgba(90, 52, 160,0.3) ;
+   --bg-secondary: #f5f6fa;
+   --bg-tertiary:#2ec1ac;
+   
+   --text-color: #555;
+ 
+   --link-color: #fff;
+   --link-bg: rgba(111, 66, 194, 0.8);
+   --link-bg-hover: rgba(111,66,193,1)
+   ;
+   --btn-color: gray;
+   --btn-bg: rgba(248,248,255);
+   --btn-bg-hover: rgba(248,248,255);
+ 
+ }
+
+ 
+ 
+ body{
+   background:#f8f8ff !important;
+   line-height: 1.7;
+   color:  gray!important;
+   font-weight: 400;
+   font-size: 1rem;
+   position: relative;
+   min-height: 100vh;
+ }
+ .footer {
+   position: absolute;
+   
+   bottom: -60px;
+   left: 0;
+   right: 0;
+ }
+ h1,h2,h3{
+   color:#6f42c1;
+ }
+ .active{
+   background-color: var(--bg-primary)!important;
+   border-color: inherit;
+ }
+ aside a.button.active{
+   background-color: var(--bg-primary);
+   border-color: inherit;
+   font-weight: bolder;
+ }
+ 
+ body{
+   position: relative;
+ }
+ 
+ .sub-heading{
+   color:rgba(111, 66, 193, 0.5);;
+ }
+ 
+ input, input[type='file'] {
+   border-radius: 5px;
+ }
+ textarea{
+   border-radius: 5px;
+ }
+
+body a:hover {
+  background-color: var(--link-bg-hover);
+  color: var(--link-color);
+  text-decoration: none;
+
+}
+ 
+ body a ,
+ a.nav-link,
+ a:link ,
+ input[type='submit']{
+   color: var(--link-color);
+   background-color: var(--link-bg);
+   border-radius: 5px;
+   text-decoration: none;
+ }
+ 
+ a:hover,a.nav-link:hover
+ input[type='submit']:hover {
+   background-color: var(--link-bg-hover);
+ }
+ 
+ a.logout{
+   padding: .5rem;
+   background-color: rgba(133, 0, 0, 0.473);
+   border-radius: 5px;
+ }
+ a.logout:hover{
+   background-color: rgba(133, 0, 0, 0.8);
+   border-radius: 5px;
+ }
+ 
+ 
+ button,
+ a.button,
+ .button
+ {
+   color: var(--btn-color) ;
+   background-color: var(--btn-bg) !important;
+   border: 1px solid var(--btn-color) !important;
+   border-radius: 5px!important;
+   padding: 0.3rem 0.5rem !important;
+ }
+
+ 
+ button:hover,
+ a.button:hover{
+   color: var(--text-color) !important;
+ }
+ a.text
+ {
+   color: var(--btn-color)!important ;
+   background-color: var(--btn-bg) !important;
+   border-radius: 5px!important;
+   padding: 0.3rem 0.5rem !important;
+ }
+ 
+ a.text:hover{
+   color: var(--text-color) !important;
+ }
+ 
+ header {
+   background-color: var(--bg-primary) ;
+   border-radius: 0px 0px 5px 5px;
+   margin: 0;
+ }
+  ul.dropdown-menu {
+   min-width: auto;
+   background-color: #555;
+ }
+
+
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Dropdown Content (Hidden by Default) */
+ul.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: auto;
+   background-color: #555;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 0.3rem;
+}
+
+/* Links inside the dropdown */
+ul.dropdown-content li {
+  color: black;
+  padding: 0.5rem;
+  text-decoration: none;
+  display: block;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+ 
+ main{
+   margin: 0!important;
+ }
+ 
+ 
+ 
+ /* aside .nav-category{
+   border-right: 1px solid #aaa;
+   height: 100vh;
+   overflow: auto;
+ } */
+ 
+ aside::after{
+   position: absolute;
+ 
+   border-right: 4px solid black !important;
+ }
+ 
+ 
+ 
+ .task, 
+ .workspace {
+   border-radius: 10px;
+   background-color: #fff;
+   background-clip: border-box;
+   border: 1px solid rgba(0,0,0,.125);
+ }
+ .task .task-header{
+   border-bottom: 1px solid rgba(0,0,0,.125);
+   padding: 0.5rem;
+ }
+ 
+ .task .task-body .left,
+ .workspace .workspace-body .left {
+   padding: 1rem;
+   border-right: 1px solid rgba(0,0,0,.125);
+ }
+ 
+ .task-view{
+     min-height:100vh;
+    border-left: 1px solid #aaa;
+    overflow: auto;
+ }
+ 
+ .task-view ul{
+   list-style-type: none;
+ }
+ .task-view ul.structure{
+   min-height: 400px;
+ }
+ 
+ 
+ 
+ .form-signin {
+   width: 100%;
+   max-width: 330px;
+   padding: 15px;
+   margin: 0 auto;
+ }
+ 
+ .status-form{
+   width: 100%;
+   max-width: 500px;
+   padding: 15px;
+   margin: 0 auto;
+ }
+ .status-form input{
+   margin:0.5rem 0 ;
+ }
+ .status-form input[name='[color]']{
+   width: 115px;
+ }
+ .status-form label{
+  padding: 0.5rem;
+ }
+ 
+ .alert{
+   height:100%;
+   width:100%;
+   margin:0;
+   padding:0;
+   position: absolute;
+   top:0;
+ }
+ 
+ .notify {
+   -moz-animation: cssAnimation 0s ease-in 3s forwards;
+   /* Firefox */
+   -webkit-animation: cssAnimation 0s ease-in 3s forwards;
+   /* Safari and Chrome */
+   -o-animation: cssAnimation 0s ease-in 3s forwards;
+   /* Opera */
+   animation: cssAnimation 0s ease-in 3s forwards;
+   -webkit-animation-fill-mode: forwards;
+   animation-fill-mode: forwards;
+ }
+ @keyframes cssAnimation {
+   to {
+       width:0;
+       height:0;
+       overflow:hidden;
+       visibility: hidden;
+   }
+ }
+ 
+ 
+ .jodit-toolbar-editor-collection_size_middle.jodit-toolbar-editor-collection_mode_horizontal{
+   background-color: #e9ecef;
+ }
+ .jodit-status-bar{
+   background-color: #e9ecef;
+ }
+ 
+ /* Emoji css psotions */
+ #commentParentDiv div{
+   position: absolute;
+     border: 1px solid gray;
+     background-color: rgb(255, 255, 255);
+     height: 200px!important;
+     overflow: auto;
+     left: auto;
+     right: auto;
+ }
+ #commentParentDiv{
+   position: relative;
+ }
+
+
+ /* Modal css */
+ /* The Modal (background) */
+
+
+.mymodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+ 
+}
+
+/* Modal Content/Box */
+.mymodal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  max-width: fit-content; 
+  border-radius:0.5rem;
+}
+
+.open{
+  display: block;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
