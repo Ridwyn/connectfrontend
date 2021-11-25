@@ -8,7 +8,7 @@ import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 
 const ProjectMenu = () => {
     const params = useParams();
-    const [projects,dispatchProject]= useContext(ProjectContext);
+    const {projects,dispatchProject}= useContext(ProjectContext);
     const [spaces]= useContext(SpaceContext);
     const[projectListSpace,setprojectListSpace]= useState({name:''})
     const[formData,setFormData]= useState({})

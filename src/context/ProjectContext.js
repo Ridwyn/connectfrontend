@@ -1,6 +1,6 @@
 import React,{useState, createContext, useMemo,useEffect} from 'react'
 import {saveProjectItem, getProjectList,deleteProjectItem} from '../actions/project'
-
+import ProjectModel from '../models/ProjectModel'
 
 export const httpProjectAction ={
     'DELETE':'DELETE',
@@ -15,6 +15,7 @@ export const ProjectContext = createContext();
 
 export const ProjectProvider = (props) => {
     const[projects,setProjects]= useState([]);
+    const[projectStore,setProjectStore] = useState(ProjectModel)
 
 
     const fetchProjectList = async(payload)=>{
@@ -53,10 +54,15 @@ export const ProjectProvider = (props) => {
       }
               
       };
+
+    const updateProjectStore=(payload)=>{
+        console.log(payload)
+        // setProjectStore(payload)
+    }
       
       
     const contextValue = useMemo(() => {
-        return [ projects, dispatchProject ];
+        return { projects, dispatchProject, projectStore, setProjectStore };
       }, [projects]);
     return (
         <ProjectContext.Provider value={ contextValue }>

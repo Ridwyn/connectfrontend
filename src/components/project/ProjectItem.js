@@ -1,10 +1,14 @@
-import React,{useEffect,useState} from 'react'
-import {Link} from 'react-router-dom'
+import React,{useEffect,useState,useContext} from 'react'
+import {Link,useHistory} from 'react-router-dom'
+import { ProjectContext , httpProjectAction} from "../../context/ProjectContext"
+
 
 
 
 const ProjectItem = ({project}) => {
+    const history = useHistory();
     const [projectState,setProjectState]=useState({...project,status_template:{name:''}})
+    const {projects,dispatchProject,projectStore,setProjectStore}= useContext(ProjectContext);
 
     useEffect(() => {
         let statuses = [
@@ -19,17 +23,25 @@ const ProjectItem = ({project}) => {
 
         // Adding the project status to State
         setProjectState({...projectState,status_template:mappedStatuses[projectState.active_status_template]})  
-
+        
+        // updateProjectStore(projectState);
     }, [setProjectState])
+
+    const handleProjectClick =()=>{
+        // console.log(projectState)
+        history.push(`/dashboard/space/${projectState.workspace._id}/project/${projectState._id}`)
+           
+        setProjectStore(projectState);
+    }
 
 
     return (
         <>
             {projectState?
-                <div className="m-2">
-                    <Link to ={`/dashboard/space/${projectState.workspace._id}/project/${projectState._id}`} className="button m-1 text-decoration-none">
+                <div className="">
+                    <button onClick={handleProjectClick} className="button m-1">
                         {projectState.name}
-                    </Link>
+                    </button>
                     <span>{projectState.status_template.name }</span>
                 </div>
             :null
