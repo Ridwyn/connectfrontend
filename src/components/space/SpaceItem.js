@@ -4,7 +4,7 @@ import { useHistory,Link } from 'react-router-dom'
 import ModalForm from '../ModalForm'
 import ModalButton from '../ModalButton'
 import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
-
+import RouterPaths from '../RouterPaths'
 
 const SpaceItem = ({space}) => {
 
@@ -24,6 +24,12 @@ const SpaceItem = ({space}) => {
     //     history.push()
     // }
 
+    const handleSpaceClick =()=>{
+        history.push(RouterPaths().ProjectMenu.urlPathText({space_id:spaceState._id}))
+    }
+    const handleStatusTemplate =()=>{
+        history.push(RouterPaths().StatusTemplateForm.urlPathText({space_id:spaceState._id}))
+    }
 
     const handleOnClickEdit =()=>{
         let editableData={name:spaceState.name};
@@ -65,6 +71,7 @@ const SpaceItem = ({space}) => {
        return checkLeaveDeleteInput(submittedData);
        
     }
+
     
     const handleDataSubmit= async (submittedData)=>{
          
@@ -87,20 +94,23 @@ const SpaceItem = ({space}) => {
         
     }
 
+
+
   
     return (
         <>
         {
            spaceState ? 
            
-           <div className=" ">
-               <Link to ={`/dashboard/space/${spaceState._id}`} className="button m-1 text-decoration-none">
-               {spaceState.name}
-               </Link>
+           <div className=" my-2 d-flex flex-row">
+               <button className=" mx-2" onClick={handleSpaceClick}>{spaceState.name}</button>
+
+               <button className=" mx-2" onClick={handleStatusTemplate}>+ Template</button>
                
    
-               <div className="dropdown">
-                   <button className="dropbtn"><i className="fas fa-ellipsis-h dropbtn"></i></button>
+               <div className="dropdown mx-2 ">
+                   <button className="dropbtn "><i className="fas fa-ellipsis-h dropbtn"></i></button>
+                   
                    <ul className="dropdown-content">
                        <li >
                        {spaceState.canEdit ?

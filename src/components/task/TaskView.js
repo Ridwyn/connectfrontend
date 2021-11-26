@@ -52,7 +52,7 @@ const TaskView = () => {
     }
 
     return (
-        <div className="task-view">
+        <div className="">
                     <div className="m-3" id="structureBtns" onClick={changeViewStructure}>
                     <button id="listview" className="m-2">LIST VIEW</button>
                     <button id="boardview" className="m-2">BOARD VIEW</button>

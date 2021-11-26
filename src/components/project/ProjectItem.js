@@ -1,7 +1,7 @@
 import React,{useEffect,useState,useContext} from 'react'
 import {Link,useHistory} from 'react-router-dom'
 import { ProjectContext , httpProjectAction} from "../../context/ProjectContext"
-
+import RouterPaths from '../RouterPaths'
 
 
 
@@ -29,7 +29,7 @@ const ProjectItem = ({project}) => {
 
     const handleProjectClick =()=>{
         // console.log(projectState)
-        history.push(`/dashboard/space/${projectState.workspace._id}/project/${projectState._id}`)
+        history.push(RouterPaths().TaskMenu.urlPathText({space_id:projectState.workspace._id,project_id:projectState._id}))
            
         setProjectStore(projectState);
     }

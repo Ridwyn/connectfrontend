@@ -1,19 +1,17 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch,useParams } from 'react-router-dom';
 import {SpaceProvider} from '../context/SpaceContext'
 import {ProjectProvider} from '../context/ProjectContext'
-import SpaceMenu from "./space/SpaceMenu"
-import ProjectMenu from "./project/ProjectMenu"
-import TaskMenu from "./task/TaskMenu"
-import taskView from './task/TaskView';
-import TaskView from './task/TaskView';
+
+import RouterPaths from './RouterPaths'
+
+
 
 const Dashboard = () => {
+
+    console.log()
     const params = useParams()
 
-    
-    const changeViewStructure = ()=>{
-
-    }
 
     return (
         <div>
@@ -22,14 +20,19 @@ const Dashboard = () => {
                 <SpaceProvider>
                     <ProjectProvider>
                         <Router>
-                        <aside className="col-lg-3 col-md-4 col-sm-12 ">
-                            <Route path ="/dashboard" component={SpaceMenu}></Route>
-                            <Route path ="/dashboard/space/:space_id/" component={ProjectMenu}></Route>
-                            <Route path ="/dashboard/space/:space_id/project/:project_id" component={TaskMenu}></Route>
-                        </aside>
-                        <section className="col-lg-9 col-md-8 col-sm-12">
-                            <Route path ="/dashboard/space/:space_id/project/:project_id" component={TaskView}></Route>
-                        </section>
+                        <Suspense fallback={<div>Loading ... </div>}>
+                            <aside className="col-lg-4 col-md-4 col-sm-12 ">
+                                <Route path ={RouterPaths().SpaceMenu.plainPathText} component={RouterPaths().SpaceMenu.component}></Route>
+                                <Suspense fallback={<h3>Projects loading ... </h3>}>
+                                <Route path ={RouterPaths().ProjectMenu.plainPathText} component={RouterPaths().ProjectMenu.component}></Route>
+                                </Suspense>
+                                <Route path ={RouterPaths().TaskMenu.plainPathText} component={RouterPaths().TaskMenu.component}></Route>
+                            </aside>
+                            <section className="col-lg-8 col-md-8 col-sm-12" style={{minHeight: '100vh', borderLeft: '1px solid #aaa',overflow: 'auto'}}>
+                                <Route path ={RouterPaths().TaskView.plainPathText} component={RouterPaths().TaskView.component}></Route>
+                                <Route path ={RouterPaths().StatusTemplateForm.plainPathText}  component={RouterPaths().StatusTemplateForm.component}></Route>
+                            </section>
+                        </Suspense>
                         </Router>
                     </ProjectProvider>
                 </SpaceProvider>
