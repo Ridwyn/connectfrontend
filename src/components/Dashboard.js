@@ -26,11 +26,14 @@ const Dashboard = () => {
                                 <Suspense fallback={<h3>Projects loading ... </h3>}>
                                 <Route path ={RouterPaths().ProjectMenu.plainPathText} component={RouterPaths().ProjectMenu.component}></Route>
                                 </Suspense>
+                                <Suspense fallback={<h3>Tasks loading ... </h3>}>
                                 <Route path ={RouterPaths().TaskMenu.plainPathText} component={RouterPaths().TaskMenu.component}></Route>
+                                </Suspense>
                             </aside>
-                            <section className="col-lg-8 col-md-8 col-sm-12" style={{minHeight: '100vh', borderLeft: '1px solid #aaa',overflow: 'auto'}}>
-                                <Route path ={RouterPaths().TaskView.plainPathText} component={RouterPaths().TaskView.component}></Route>
-                                <Route path ={RouterPaths().StatusTemplateForm.plainPathText}  component={RouterPaths().StatusTemplateForm.component}></Route>
+                            <section className="col-lg-8 col-md-8 col-sm-12 container" style={{minHeight: '100vh', borderLeft: '1px solid #aaa',overflow: 'auto'}}>
+                                <Route exact path ={RouterPaths().TaskView.plainPathText} component={RouterPaths().TaskView.component}></Route>
+                                <Route exact path ={RouterPaths().TaskForm.plainPathText} component={RouterPaths().TaskForm.component}></Route>
+                                <Route exact path ={RouterPaths().StatusTemplateForm.plainPathText}  component={RouterPaths().StatusTemplateForm.component}></Route>
                             </section>
                         </Suspense>
                         </Router>

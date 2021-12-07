@@ -5,12 +5,14 @@
 // import TaskView from './task/TaskView';
 // import StatusTemplateForm from './status/StatusTemplateForm';
 import React from 'react';
+// import TaskForm from './task/TaskForm';
 
 
 const SpaceMenu = React.lazy(() => import('./space/SpaceMenu'))
 const ProjectMenu = React.lazy(() => import('./project/ProjectMenu'))
 const TaskMenu = React.lazy(() => import('./task/TaskMenu'))
 const TaskView = React.lazy(() => import('./task/TaskView'))
+const TaskForm = React.lazy(() => import('./task/TaskForm'))
 const StatusTemplateForm = React.lazy(() => import('./status/StatusTemplateForm'))
 
 
@@ -44,6 +46,13 @@ const RouterPaths=()=>{
                     return `/dashboard/space/${space_id}/project/${project_id}`
                 },
                 'plainPathText':'/dashboard/space/:space_id/project/:project_id',
+            },
+           'TaskForm':{
+                'component':TaskForm,
+                'urlPathText':function ({space_id,project_id}) {
+                    return `/dashboard/space/${space_id}/project/${project_id}/task_form`
+                },
+                'plainPathText':'/dashboard/space/:space_id/project/:project_id/task_form',
             },
            'StatusTemplateForm':{
                 'component':StatusTemplateForm,

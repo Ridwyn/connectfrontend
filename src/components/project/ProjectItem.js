@@ -34,6 +34,10 @@ const ProjectItem = ({project}) => {
         setProjectStore(projectState);
     }
 
+    const handleOnClickNew =()=>{
+        
+    }
+
 
     return (
         <>

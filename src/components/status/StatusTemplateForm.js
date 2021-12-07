@@ -2,10 +2,14 @@ import React from 'react'
 
 const StatusTemplateForm = () => {
     return (
-        <form>
+        <>
+        <h1>hi from status Template</h1>
+            <form>
             <label>Template name</label>
             
         </form>
+        </>
+        
     )
 }
 
