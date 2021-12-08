@@ -34,8 +34,9 @@ const ProjectItem = ({project}) => {
         setProjectStore(projectState);
     }
 
-    const handleOnClickNew =()=>{
-        
+    const handleProjectNewTask =()=>{
+        history.push(RouterPaths().TaskForm.urlPathText({space_id:projectState.workspace._id,project_id:projectState._id}))
+
     }
 
 
@@ -45,6 +46,9 @@ const ProjectItem = ({project}) => {
                 <div className="">
                     <button onClick={handleProjectClick} className="button m-1">
                         {projectState.name}
+                    </button>
+                    <button onClick={handleProjectNewTask} className="button m-1">
+                        + task
                     </button>
                     <span>{projectState.status_template.name }</span>
                 </div>
