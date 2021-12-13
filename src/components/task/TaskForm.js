@@ -1,6 +1,23 @@
-import React from 'react'
+import React,{useState, useRef} from 'react'
+import JoditEditor from "jodit-react"; 
 
 const TaskForm = () => {
+  const [formData,setFormData] = useState({});
+
+  const editor = useRef(null);
+	const [content, setContent] = useState('');
+  const config = {
+		readonly: false, // all options from https://xdsoft.net/jodit/doc/
+    placeholder: 'Start typing task here....'
+	}
+
+  const changeFormData = (e)=>{
+    console.log(e.target.name)
+    console.log(e.target.selectedOptions)
+    // setFormData({...formData,})
+  }
+
+
     return (
         <>
         <section className="task col my-4 p-2 ">
@@ -33,19 +50,22 @@ const TaskForm = () => {
                 </p>
 
                 <div>
-                    <input type="text" name="name" className="mb-3" value="" placeholder="name"/>
+                    <input type="text" name="name" className="mb-3" value="" placeholder="name"
+                    onChange={changeFormData}/>
                 </div>
                 <div className="row justify-content-between align-items-start">
                     <div className="col mb-3">
                       <label className="input-group-text fw-light" for=""> Select Members to Assign:</label>
-                      <select className="form-select"  id="" name="assignees" size="3" multiple>             
+                      <select className="form-select"  id="" name="assignees" size="3" multiple onChange={changeFormData}>             
                           <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES</option>
+                          <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES_5</option>
+                          <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES_7</option>
                       </select> 
                     </div>
 
                     <div className="col mb-3">
                       <label className="input-group-text fw-light" for=""> Due date:</label>
-                      <input type="datetime-local" name="due_date" value="" />
+                      <input className="w-100" type="datetime-local" name="due_date" value=""  />
                     </div>
 
                     <div className="col mb-3">
@@ -55,6 +75,17 @@ const TaskForm = () => {
                             STATUS_TEXT
                           </option>
                       </select> 
+                    </div>
+
+                    <div className="col mb-3">
+                      <JoditEditor
+                              ref={editor}
+                              value={content}
+                              config={config}
+                              tabIndex={1} // tabIndex of textarea
+                              onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                              onChange={newContent => {}}
+                          />
                     </div>
                 </div>
 
@@ -68,6 +99,8 @@ const TaskForm = () => {
                <input type="submit" value="Save"/>
 
             </form>
+
+            {/* COMMENT SECTIOMN */}
 
             <div className="col-4 right d-flex flex-column justify-content-between ">
               <div>
