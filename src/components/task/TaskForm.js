@@ -1,20 +1,38 @@
-import React,{useState, useRef} from 'react'
+import React,{useState, useRef,useContext} from 'react'
+import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 import JoditEditor from "jodit-react"; 
+import TaskCommentForm from './TaskCommentForm';
 
 const TaskForm = () => {
   const [formData,setFormData] = useState({});
+  const [spaces,dispatchSpace]= useContext(SpaceContext);
 
   const editor = useRef(null);
 	const [content, setContent] = useState('');
+  const [taskFormData,setTaskFormData]= useState({});
+
   const config = {
 		readonly: false, // all options from https://xdsoft.net/jodit/doc/
     placeholder: 'Start typing task here....'
 	}
 
   const changeFormData = (e)=>{
-    console.log(e.target.name)
-    console.log(e.target.selectedOptions)
-    // setFormData({...formData,})
+
+    console.log(taskFormData.due_date);
+    let key = e.target.name;
+    let data ={};
+    if (key ==='name') {
+      data[key]=e.target.value
+      setTaskFormData({...taskFormData,...data})
+    }
+    if (key ==='due_date') {
+      data[key]=e.target.value
+      setTaskFormData({...taskFormData,...data})
+    }
+    if (key ==='due_date') {
+      data[key]=e.target.value
+      setTaskFormData({...taskFormData,...data})
+    }
   }
 
 
@@ -50,7 +68,7 @@ const TaskForm = () => {
                 </p>
 
                 <div>
-                    <input type="text" name="name" className="mb-3" value="" placeholder="name"
+                    <input type="text" name="name" className="mb-3" value={taskFormData.name ? taskFormData.name :''} placeholder="name"
                     onChange={changeFormData}/>
                 </div>
                 <div className="row justify-content-between align-items-start">
@@ -65,7 +83,7 @@ const TaskForm = () => {
 
                     <div className="col mb-3">
                       <label className="input-group-text fw-light" for=""> Due date:</label>
-                      <input className="w-100" type="datetime-local" name="due_date" value=""  />
+                      <input className="w-100" type="datetime-local" name="due_date" value={taskFormData.due_date ? taskFormData.due_date :''} onChange={changeFormData} />
                     </div>
 
                     <div className="col mb-3">
@@ -80,11 +98,12 @@ const TaskForm = () => {
                     <div className="col mb-3">
                       <JoditEditor
                               ref={editor}
-                              value={content}
+                              value={taskFormData.name ? taskFormData.name :''}
                               config={config}
                               tabIndex={1} // tabIndex of textarea
-                              onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                              onChange={newContent => {}}
+                              // onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                              onBlur={(content)=>{setTaskFormData({...taskFormData,description:content})}} // preferred to use only this option to update the content for performance reasons
+                              // onChange={(content)=>{setTaskFormData({...taskFormData,description:content})}}
                           />
                     </div>
                 </div>
@@ -101,33 +120,8 @@ const TaskForm = () => {
             </form>
 
             {/* COMMENT SECTIOMN */}
+          <TaskCommentForm/>
 
-            <div className="col-4 right d-flex flex-column justify-content-between ">
-              <div>
-                <h4>Comments</h4>
-                <div style={{overflow: 'auto', maxHeight:'80vh'}}> 
-                <div className="d-flex felx-row flex-wrap my-3 p-2 border-bottom"> 
-                    <span className=" fw-light">COMMENTER: </span>
-                    <span className="text-break">COMMENT</span>
-                    
-                    <span className="ms-auto"><button className="button" ><i className="fas fa-times text-danger"></i></button></span>
-                  
-                </div>
-                </div>                
-              </div>
-              
-              
-              <form action="/task/comment" method="post">
-                <div className="my-3" id="commentParentDiv">
-                  <input type="text" name="task_id" value ="" hidden/>
-                  <input data-emojiable="true" id="commentText" type="text" name="comment" placeholder="comment on this task"/>
-                  <input type="submit" value="Comment"/>
-                  
-                </div>
-              </form>
-              
-
-            </div>
 
           </div>
 

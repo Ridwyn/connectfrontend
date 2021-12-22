@@ -1,14 +1,20 @@
 import { useState,useEffect } from 'react'
+import {Link,useHistory} from 'react-router-dom'
 import Search from './Search'
 import Logout from './Logout'
 
 import {ACCOUNT_DATA, accountAction} from '../actions/account'
 
 const NavLoggedIn = () => {
-    const [user, setUser] = useState({});
-    
+    const [user, setUser] = useState({name:''});
+    const history = useHistory();
+
+
     useEffect(()=>{
         accountAction({type:ACCOUNT_DATA,payload:{}}).then(data=>{
+            if(!data){
+                history.push('/login')
+            }
             setUser(data)
         })
     },[])
