@@ -17,7 +17,7 @@ export const accountAction = async({type,payload}) =>{
             case 'ACCOUNT_DATA':
                
               res=await axios.get(`${server}/api/user/getProfile`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}});
-              console.log(res.data)
+              
               return res.data
             case 'SIGNUP':
               res=await axios.post(`${server}/api/signup`,payload);

@@ -3,9 +3,13 @@ import {useParams } from 'react-router-dom';
 import { ProjectContext , httpProjectAction} from "../../context/ProjectContext"
 import StatusList from '../status/StatusList';
 
+import { getTaskList } from '../../actions/task';
+
 const TaskView = () => {
     const {projectStore}= useContext(ProjectContext);
     const [statuses,setStatuses]=useState([]);
+    const [tasks,setTasks]=useState([]);
+    const {space_id,project_id}= useParams();
     // const [html,sethtml]=useState('<div>htllo</div>');
 
     useEffect(() => {
@@ -13,8 +17,15 @@ const TaskView = () => {
             setStatuses(projectStore.status_template.statuses);
         }
 
+        // console.log(projectStore)
+
+        getTaskList({project_id:project_id}).then((data)=>{
+            console.log(data)
+            setTasks(data)
+        })
+
        
-    }, [projectStore])
+    }, [projectStore,getTaskList])
 
     const changeViewStructure =()=>{
         let data =''
@@ -48,10 +59,10 @@ const TaskView = () => {
                     </div>  
                     
                              
-                    <ul  id="#structure" className="structure d-flex flex-row justify-content-between overflow-auto">
+                    <ul  id="#structure" className="pl-0 structure d-flex flex-row justify-content-between overflow-auto" style={{listStyleType:'none'}}>
                         {
                             statuses?
-                            <StatusList statuses={statuses}/>   
+                            <StatusList statuses={statuses} tasks={tasks}/>   
                             :null
                         }  
                     </ul>
