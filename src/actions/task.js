@@ -2,8 +2,8 @@ import server from '../config/index'
 import axios  from 'axios';
 
 
-export const newTask = async(payload) =>{
-    let res = await    axios.post(`${server}/api/task/newTask`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
+export const saveTask = async(payload) =>{
+    let res = await    axios.post(`${server}/api/task/saveTask`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
 export const getTaskList = async(payload) =>{

@@ -1,21 +1,19 @@
 import React from 'react'
-import StatusItem from './StatusItem'
+import TaskItem from './TaskItem'
+import TaskList from './TaskList'
 
-const StatusList = ({statuses,tasks}) => {
+const TaskStatusFilter = ({statuses,tasks}) => {
     return (
         <>
         {
              statuses.map((status,key)=>{
+                //  Filter task based on their status 
                 const filteredTasks=tasks.filter((task)=>{
                     if (task.status) {
                         return String(task.status.status)=== String(status.status)
                     }
-                })
-                return<StatusItem 
-                key={key} 
-                status={status} 
-                tasks={filteredTasks}
-                ></StatusItem>
+                }) 
+                return<TaskList status={status} tasks={filteredTasks}/>
             })
         }
             
@@ -23,4 +21,4 @@ const StatusList = ({statuses,tasks}) => {
     )
 }
 
-export default StatusList
+export default TaskStatusFilter

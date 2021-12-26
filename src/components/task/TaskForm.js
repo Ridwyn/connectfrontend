@@ -4,7 +4,7 @@ import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 import { ProjectContext,httpProjectAction} from "../../context/ProjectContext"
 import JoditEditor from "jodit-react"; 
 import TaskCommentForm from './TaskCommentForm';
-import {newTask} from '../../actions/task'
+import {saveTask,getTaskItem} from '../../actions/task'
 
 const TaskForm = () => {
   const [formData,setFormData] = useState({});
@@ -12,10 +12,10 @@ const TaskForm = () => {
   const [taskFormData,setTaskFormData]= useState({});
   const editor = useRef(null);
   const [spaces,dispatchSpace]= useContext(SpaceContext);
-  const {projects,setProjects,projectStore,setProjectStore}= useContext(ProjectContext);
-  const {space_id,project_id} = useParams();
+  const {projects,dispatchProject,projectStore,setProjectStore}= useContext(ProjectContext);
+  const {space_id,project_id,task_id} = useParams();
   useEffect (()=>{
-    // console.log(projects)
+
     const project = projects.find(project => String(project._id)===String(project_id))
     if (project) {
       const allStatuses=[project.workspace.default_statuses,...project.workspace.custom_statuses]
@@ -25,20 +25,31 @@ const TaskForm = () => {
       }
     }
 
-      
-    //New task Created i.e Add additional data to fields
-    if (!taskFormData.created_at) {
+    
+    // Check if task is new or needs update
+    if (task_id!=='undefined') {
+      getTaskItem({_id:task_id}).then((data=>{
+        setTaskFormData({
+          ...data,
+          updated_by:JSON.parse(localStorage.getItem('user'))._id,
+          updated_at:(new Date(Date.now() )).toISOString()
+        })
+      }))
+    }else{
       setTaskFormData({
-        ...taskFormData,
+        // ...taskFormData,
         created_at:(new Date(Date.now() )).toISOString(),
         created_by:JSON.parse(localStorage.getItem('user'))._id,
         workspace:space_id,
-        project:project_id
+        project:project_id,
+        status:statusTemplate.statuses?statusTemplate.statuses[0]: ''
       })
-
     }
 
-  },[projects,statusTemplate])
+
+      
+
+  },[projects,statusTemplate,getTaskItem,dispatchProject])
 
   
  
@@ -72,9 +83,7 @@ const TaskForm = () => {
     e.preventDefault();
     console.log(taskFormData)
 
-    newTask(taskFormData).then((res)=>{
-      console.log(res)
-    });
+   saveTask(taskFormData).then((data)=>{console.log(data)})
   }
 
 
@@ -104,7 +113,7 @@ const TaskForm = () => {
           </div> 
 
           <div className="task-body row">
-            <form className="col-8 left" id="taskform" encType="multipart/form-data" onSubmit={handleFormSubmit}>
+            <form className="col px-4" id="taskform" encType="multipart/form-data" onSubmit={handleFormSubmit}>
                 <p>Tags:
                   Bug, Sprint22
                 </p>
@@ -113,13 +122,13 @@ const TaskForm = () => {
                   <div className="col mb-3">
                     <label className="input-group-text fw-light" for=""> Task Name</label>
                       <input type="text" name="name" className="mb-3 w-100" value={taskFormData.name ? taskFormData.name :''} placeholder="task name"
-                      onChange={changeFormData}/>
+                      onChange={changeFormData} required/>
                   </div>
 
 
                   <div className="col mb-3">
                       <label className="input-group-text fw-light" for=""> Due date:</label>
-                      <input className="w-100" type="datetime-local" name="due_date" value={taskFormData.due_date ? taskFormData.due_date :''} onChange={changeFormData} />
+                      <input className="w-100" type="datetime-local" name="due_date" value={taskFormData.due_date ? (new Date(taskFormData.due_date)).toISOString().split('.')[0] :''} onChange={changeFormData} />
                    </div>
 
                 </div>
@@ -137,7 +146,7 @@ const TaskForm = () => {
 
                     <div className="col mb-3">
                       <label className="input-group-text fw-light text-capitalize" for="inputGroupSelect01"> {statusTemplate? statusTemplate.name :''}</label>
-                      <select className="custom-select" id="inputGroupSelect01" name="status" onChange={changeFormData}>
+                      <select className="custom-select" id="inputGroupSelect01" name="status" onChange={changeFormData} required>
                         {
                           statusTemplate.statuses?
                           statusTemplate.statuses.map((status,index)=>(
@@ -177,9 +186,6 @@ const TaskForm = () => {
                 value="Save"/>
 
             </form>
-
-            {/* COMMENT SECTIOMN */}
-          <TaskCommentForm/>
 
 
           </div>

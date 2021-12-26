@@ -1,7 +1,8 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {useParams } from 'react-router-dom';
 import { ProjectContext , httpProjectAction} from "../../context/ProjectContext"
-import StatusList from '../status/StatusList';
+import TaskList from './TaskList'
+import TaskStatusFilter from './TaskStatusFilter'
 
 import { getTaskList } from '../../actions/task';
 
@@ -20,7 +21,6 @@ const TaskView = () => {
         // console.log(projectStore)
 
         getTaskList({project_id:project_id}).then((data)=>{
-            console.log(data)
             setTasks(data)
         })
 
@@ -61,8 +61,10 @@ const TaskView = () => {
                              
                     <ul  id="#structure" className="pl-0 structure d-flex flex-row justify-content-between overflow-auto" style={{listStyleType:'none'}}>
                         {
-                            statuses?
-                            <StatusList statuses={statuses} tasks={tasks}/>   
+                            statuses ?
+                            <>
+                                <TaskStatusFilter tasks={tasks} statuses={statuses}/> 
+                            </>
                             :null
                         }  
                     </ul>

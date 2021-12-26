@@ -47,8 +47,8 @@ const ModalForm = ({modalTitle,onSubmit,inputData,modalFormId,placeholders={},er
     return (
         <div>
            
-            <div  className='modal fade' id={modalFormId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog">
+            <div  className='modal fade ' id={modalFormId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                 <div className="modal-header">  
                     <h5 className="modal-title" id="exampleModalLabel">{modalTitle}</h5>

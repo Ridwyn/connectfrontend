@@ -49,10 +49,10 @@ const RouterPaths=()=>{
             },
            'TaskForm':{
                 'component':TaskForm,
-                'urlPathText':function ({space_id,project_id}) {
-                    return `/dashboard/space/${space_id}/project/${project_id}/task_form`
+                'urlPathText':function ({space_id,project_id,task_id}) {
+                    return `/dashboard/space/${space_id}/project/${project_id}/task_form/${task_id}`
                 },
-                'plainPathText':'/dashboard/space/:space_id/project/:project_id/task_form',
+                'plainPathText':'/dashboard/space/:space_id/project/:project_id/task_form/:task_id',
             },
            'StatusTemplateForm':{
                 'component':StatusTemplateForm,

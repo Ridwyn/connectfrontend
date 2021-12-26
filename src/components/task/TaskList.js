@@ -1,15 +1,20 @@
 import React from 'react'
 import TaskItem from './TaskItem'
 
-const TaskList = ({tasks}) => {
+const TaskList = ({status,tasks}) => {
     return (
         <>
-             {tasks.map((task)=>{
-                    return <TaskItem 
-                    key={task._id} 
-                    task={task} 
-                    ></TaskItem>
-                })}  
+        <li className="col">
+            <div className="card text-center m-3" style={{backgroundColor: `${status.color}`,borderTop:'4px solid gray'}} >
+                <div className="text-white" >{status.status}</div>
+            </div>
+            {
+                tasks.map((task,key)=>{
+                    return<TaskItem task={task} key={key}/>
+                    })
+            }
+        </li>
+    
             
         </>
     )

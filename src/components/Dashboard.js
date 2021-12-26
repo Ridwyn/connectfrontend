@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch,useParams } from 'react-ro
 import {SpaceProvider} from '../context/SpaceContext'
 import {ProjectProvider} from '../context/ProjectContext'
 
+
 import RouterPaths from './RouterPaths'
 
 const TaskForm = React.lazy(() => import('./task/TaskForm'))
@@ -50,7 +51,7 @@ const Dashboard = () => {
                             <section className={sectionClass} >
                                 <button onClick={handleAsideOpenClose} ><i class={arrowSymbol}></i></button>
                                 <Route exact path ={RouterPaths().TaskView.plainPathText} component={RouterPaths().TaskView.component}></Route>
-                                <Route exact path ={RouterPaths().TaskForm.plainPathText} component={RouterPaths().TaskForm.component}></Route>
+                                <Route exact path ={RouterPaths().TaskForm.plainPathText} component={RouterPaths().TaskForm.component} ></Route>
                                 <Route exact path ={RouterPaths().StatusTemplateForm.plainPathText}  component={RouterPaths().StatusTemplateForm.component}></Route>
                             </section>
                         </Suspense>
