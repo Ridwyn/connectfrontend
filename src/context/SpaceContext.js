@@ -1,9 +1,9 @@
 import React,{useState, createContext, useMemo,useEffect} from 'react'
-import {saveSpaceItem, getSpaceList,getSpaceItem,deleteSpaceItem} from '../actions/space'
+import {saveSpaceItem, getSpaceList,getSpaceItem,deleteSpaceItem,joinSpace,leaveSpace} from '../actions/space'
 
 
 export const httpSpaceAction ={
-    'DELETE':'DELETE','LEAVE':'LEAVE',
+    'DELETE':'DELETE','LEAVE':'LEAVE','JOIN':'JOIN',
     'EDIT':'EDIT','CREATE':'CREATE',
     'GET':'GET',
     'GETITEM':'GETITEM'
@@ -48,6 +48,10 @@ export const SpaceProvider = (props) => {
             fetchSpaceList();
             return res;
         case httpSpaceAction.LEAVE:
+            await leaveSpace(payload)
+           return fetchSpaceList();
+        case httpSpaceAction.JOIN:
+            await joinSpace(payload)
            return fetchSpaceList();
         case httpSpaceAction.GET:
            return fetchSpaceList();

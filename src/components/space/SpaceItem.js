@@ -18,11 +18,7 @@ const SpaceItem = ({space}) => {
     const [submitAction,setSubmitAction]=useState('')
 
 
-    // const handleOnClickCurrentSpace =()=>{
-    //     console.log(history)
-    //     console.log(history.location.pathname)
-    //     history.push()
-    // }
+
 
     const handleSpaceClick =()=>{
         history.push(RouterPaths().ProjectMenu.urlPathText({space_id:spaceState._id}))
@@ -81,7 +77,11 @@ const SpaceItem = ({space}) => {
                     dispatchSpace({type:httpSpaceAction.DELETE,payload:space})
                     setSpaceState({})
                 case httpSpaceAction.LEAVE:
-
+                    let data ={};
+                    data.user_id=JSON.parse(localStorage.getItem('user'))._id
+                    data.space_id=space._id
+                    dispatchSpace({type:httpSpaceAction.LEAVE,payload:data})
+                    setSpaceState({})
                 case httpSpaceAction.EDIT:
                     let updatedSpace={...space,...submittedData};
                     updatedSpace= await dispatchSpace({type:httpSpaceAction.EDIT,payload:updatedSpace}) 
@@ -121,9 +121,12 @@ const SpaceItem = ({space}) => {
                        <li >
                            <ModalButton modalFormId={'spaceitem'+spaceState._id}  text='invite' onClick={()=>{setFormData({email:''});setModalTitle(`Invite ${space.name}`)}}/>
                        </li>
-                       <li >
-                           <ModalButton modalFormId={'spaceitem'+spaceState._id}  text='leave' onClick={handleOnClickLeave}/>
-                       </li>
+                       {space.canLeave?
+                        <li >
+                            <ModalButton modalFormId={'spaceitem'+spaceState._id}  text='leave' onClick={handleOnClickLeave}/>
+                        </li>
+                        :''
+                        }
                        <li>
                            {space.canDelete?
                                <ModalButton modalFormId={'spaceitem'+spaceState._id}  text='delete' color='red' onClick={handleOnClickDelete}/>

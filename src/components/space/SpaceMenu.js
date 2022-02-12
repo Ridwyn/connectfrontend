@@ -12,7 +12,14 @@ const SpaceMenu = () => {
    
 
     const handleDataSubmit= async (data)=>{
-        dispatchSpace({type:httpSpaceAction.EDIT,payload:data})
+        // Join a Space or Create a Space
+        if (data.join_code) {
+            data.user_id=JSON.parse(localStorage.getItem('user'))._id
+          await dispatchSpace({type:httpSpaceAction.JOIN,payload:data})
+        }else{
+            dispatchSpace({type:httpSpaceAction.EDIT,payload:data})
+        }
+    
     }
 
 

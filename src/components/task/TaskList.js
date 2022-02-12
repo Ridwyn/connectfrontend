@@ -9,8 +9,8 @@ const TaskList = ({status,tasks}) => {
                 <div className="text-white" >{status.status}</div>
             </div>
             {
-                tasks.map((task,key)=>{
-                    return<TaskItem task={task} key={key}/>
+                tasks.map((task,index)=>{
+                    return<TaskItem task={task} key={index}/>
                     })
             }
         </li>

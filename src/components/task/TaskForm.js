@@ -1,5 +1,6 @@
 import React,{useState, useRef,useContext, useEffect,useCallback} from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import RouterPaths from '../RouterPaths';
 import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 import { ProjectContext,httpProjectAction} from "../../context/ProjectContext"
 import JoditEditor from "jodit-react"; 
@@ -10,19 +11,27 @@ const TaskForm = () => {
   const [formData,setFormData] = useState({});
   const [statusTemplate,setStatusTemplate] = useState({})
   const [taskFormData,setTaskFormData]= useState({});
+  const [spaceMembers,setSpaceMembers]= useState([]);
   const editor = useRef(null);
   const [spaces,dispatchSpace]= useContext(SpaceContext);
   const {projects,dispatchProject,projectStore,setProjectStore}= useContext(ProjectContext);
   const {space_id,project_id,task_id} = useParams();
-  useEffect (()=>{
+  const history = useHistory();
 
+  useEffect (()=>{
+    const space = spaces.find(space => String(space._id === String(space_id)))
     const project = projects.find(project => String(project._id)===String(project_id))
+
     if (project) {
       const allStatuses=[project.workspace.default_statuses,...project.workspace.custom_statuses]
       const temp =allStatuses.find(status=> String(status._id) === String(project.active_status_template))
       if (temp) {
       setStatusTemplate(temp)
       }
+    }
+
+    if (space) {
+      setSpaceMembers(space.members)
     }
 
     
@@ -49,7 +58,7 @@ const TaskForm = () => {
 
       
 
-  },[projects,statusTemplate,getTaskItem,dispatchProject])
+  },[projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers])
 
   
  
@@ -75,15 +84,31 @@ const TaskForm = () => {
     }
     if (key ==='status') {
       data[key]=JSON.parse(e.target.value)
+      const newTaskFormData={...taskFormData,...data}
+      setTaskFormData(newTaskFormData);
+    }
+    if (key ==='assignees') {
+      let selectedOpts=e.target.selectedOptions
+      const values= Array.from(selectedOpts).map(({ value }) => value);
+      data[key]=Array.from(new Set([...taskFormData.assignees.map(assignee=>{return assignee._id}), ...values]));
       setTaskFormData({...taskFormData,...data})
     }
 
   }
   const handleFormSubmit =(e)=>{
     e.preventDefault();
-    console.log(taskFormData)
 
    saveTask(taskFormData).then((data)=>{console.log(data)})
+   history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
+  }
+
+  const removeAssignee = (assignee_id) =>{
+    // Filter the assignee and transform the taskform data
+    let data={assignees:taskFormData.assignees.filter(assignee=>(String(assignee._id ))!= String(assignee_id))}
+    setTaskFormData({...taskFormData,...data})
+    saveTask(taskFormData).then((data)=>{console.log(data)})
+    history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
+ 
   }
 
 
@@ -101,8 +126,21 @@ const TaskForm = () => {
             </div>
 
             <div className="p-1 col">
-              <span className="fw-light">Assignees of task:</span>
-              <span> Dropdown names</span>
+              <div className="dropdown mx-2 ">
+                <button className="dropbtn fw-light ">Assignees of task <i className="fas fa-caret-down"></i></button>
+                <ul className="dropdown-content w-100 ">
+                  {
+                    taskFormData.assignees ?
+                    (taskFormData.assignees.map((assignee,index)=>
+                    (<li className=" fw-light" key={index}>
+                      {assignee.name} 
+                    <i className="fas fa-user-times text-danger float-right p-1" onClick={()=>{removeAssignee(assignee._id)}} role="button"></i>
+                    </li>)))
+                    :(<li className="fw-light ">Assign members   </li>)
+
+                  }
+                </ul>
+                </div>
             </div>
 
             <div className="p-1 col-md-4 col-sm-12">
@@ -120,37 +158,45 @@ const TaskForm = () => {
 
                 <div className="row justify-content-between align-items-start">
                   <div className="col mb-3">
-                    <label className="input-group-text fw-light" for=""> Task Name</label>
+                    <label className="input-group-text fw-light" htmlFor=""> Task Name</label>
                       <input type="text" name="name" className="mb-3 w-100" value={taskFormData.name ? taskFormData.name :''} placeholder="task name"
                       onChange={changeFormData} required/>
                   </div>
 
 
                   <div className="col mb-3">
-                      <label className="input-group-text fw-light" for=""> Due date:</label>
+                      <label className="input-group-text fw-light" htmlFor=""> Due date:</label>
                       <input className="w-100" type="datetime-local" name="due_date" value={taskFormData.due_date ? (new Date(taskFormData.due_date)).toISOString().split('.')[0] :''} onChange={changeFormData} />
                    </div>
 
                 </div>
                 <div className="row justify-content-between align-items-start">
                     <div className="col mb-3">
-                      <label className="input-group-text fw-light" for=""> Select Members to Assign:</label>
-                      <select className="form-select"  id="" name="assignees" size="3" multiple onChange={changeFormData}>             
-                          <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES</option>
-                          <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES_5</option>
-                          <option value="ASSIGNEES_NAMES" >ASSIGNEES_NAMES_7</option>
+                      <label className="input-group-text fw-light" htmlFor=""> Select Members to Assign:</label>
+                      
+                      <select className="form-select"  id="" name="assignees" size="3" multiple onChange={changeFormData}> 
+                      {
+                        spaceMembers?
+                        spaceMembers.map((member,index)=>(
+                          <option value={member._id} key={index} >
+                             {member.name}
+                          </option>
+                        ))
+                        :''
+
+                      }           
                       </select> 
                     </div>
 
                   
 
                     <div className="col mb-3">
-                      <label className="input-group-text fw-light text-capitalize" for="inputGroupSelect01"> {statusTemplate? statusTemplate.name :''}</label>
+                      <label className="input-group-text fw-light text-capitalize" htmlFor="inputGroupSelect01"> {statusTemplate? statusTemplate.name :''}</label>
                       <select className="custom-select" id="inputGroupSelect01" name="status" onChange={changeFormData} required>
                         {
                           statusTemplate.statuses?
                           statusTemplate.statuses.map((status,index)=>(
-                            <option value={JSON.stringify(status)} style={{color:status.color}}>
+                            <option value={JSON.stringify(status)} style={{color:status.color}} key={index}>
                                {status.status}
                             </option>
                           ))
