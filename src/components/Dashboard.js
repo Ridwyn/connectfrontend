@@ -53,6 +53,7 @@ const Dashboard = () => {
                                 <Route exact path ={RouterPaths().TaskView.plainPathText} component={RouterPaths().TaskView.component}></Route>
                                 <Route exact path ={RouterPaths().TaskForm.plainPathText} component={RouterPaths().TaskForm.component} ></Route>
                                 <Route exact path ={RouterPaths().StatusTemplateForm.plainPathText}  component={RouterPaths().StatusTemplateForm.component}></Route>
+                                <Route exact path ={RouterPaths().StatusTemplatesView.plainPathText}  component={RouterPaths().StatusTemplatesView.component}></Route>
                             </section>
                         </Suspense>
                         </Router>

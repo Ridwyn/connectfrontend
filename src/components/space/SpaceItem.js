@@ -27,6 +27,10 @@ const SpaceItem = ({space}) => {
         history.push(RouterPaths().StatusTemplateForm.urlPathText({space_id:spaceState._id}))
     }
 
+    const hadnleOnClickTemplates =()=>{
+        history.push(RouterPaths().StatusTemplatesView.urlPathText({space_id:spaceState._id}))
+    }
+
     const handleOnClickEdit =()=>{
         let editableData={name:spaceState.name};
         setFormData(editableData);
@@ -45,6 +49,8 @@ const SpaceItem = ({space}) => {
         setModalTitle(`Delete  ${spaceState.name}`);
         setSubmitAction(httpSpaceAction.DELETE);
     }
+
+  
 
     const checkLeaveDeleteInput=(obj)=>{
         let bol=false;
@@ -132,6 +138,9 @@ const SpaceItem = ({space}) => {
                                <ModalButton modalFormId={'spaceitem'+spaceState._id}  text='delete' color='red' onClick={handleOnClickDelete}/>
                                :''
                            }
+                       </li>
+                       <li>
+                            <button onClick={hadnleOnClickTemplates}>Custom Templates</button>
                        </li>
                    </ul>
                </div>

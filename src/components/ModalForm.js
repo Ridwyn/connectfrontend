@@ -9,9 +9,21 @@ const ModalForm = ({modalTitle,onSubmit,inputData,modalFormId,placeholders={},er
     const changeInput=(e)=>{
         let key = e.target.id;
         let data ={};
-        data[key]=e.target.value
+       
+       
         
-        setStateInputData({...stateInputData,...data})
+        
+        if (key !=='active_status_template') {
+            data[key]=e.target.value
+            setStateInputData({...stateInputData,...data})
+        }
+        if (key =='active_status_template') {
+            data[key]=e.target.selectedOptions[0].value
+            setStateInputData({...stateInputData,...data})
+        }
+        
+
+       
     }
     
     // Run Once only when inputdata from param comes in
@@ -59,13 +71,26 @@ const ModalForm = ({modalTitle,onSubmit,inputData,modalFormId,placeholders={},er
                         {
                             
                             Object.entries(inputData).map(([key,value], index)=>{
+                                let element=null;
+                                if (key=='active_status_template') {
+                                   element =<select className="form-select" id={key} name="active_status_template" onChange={changeInput} >
+                                        {
+                                            value.map(({_id,name})=>(
+                                                <option value={_id}>{name}</option>
+                                            ))
+                                        }
+                                        </select> 
+                                 }else{
+                                     element=<input type="text" className="form-control " id={key} 
+                                     placeholder={placeholders[key]?placeholders[key]:''}
+                                     value={stateInputData[key]} onChange={changeInput}
+                                     required
+                                     />
+                                 }
+
                                 return<div className="mb-3" key={index}> 
                                         <label htmlFor="text" className="col-form-label" style={{ 'textTransform': 'capitalize'}}>{key}</label>
-                                        <input type="text" className="form-control " id={key} 
-                                        placeholder={placeholders[key]?placeholders[key]:''}
-                                        value={stateInputData[key]} onChange={changeInput}
-                                        required
-                                        />
+                                            {element}                                            
                                         <div className="text-danger form-text">
                                          {errors[key]?errors[key]:''}
                                         </div>

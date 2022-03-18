@@ -6,6 +6,10 @@ export const saveSpaceItem = async(payload) =>{
     let res = await    axios.post(`${server}/api/space/saveForm`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
+export const customStatuses = async(payload) =>{
+    let res = await    axios.post(`${server}/api/space/custom_statuses`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
+    return res.data
+};
 export const joinSpace = async(payload) =>{
     let res = await    axios.post(`${server}/api/space/joinSpace`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data

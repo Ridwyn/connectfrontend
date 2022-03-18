@@ -11,18 +11,23 @@ const ProjectMenu = () => {
     const {projects,dispatchProject}= useContext(ProjectContext);
     const [spaces]= useContext(SpaceContext);
     const[projectListSpace,setprojectListSpace]= useState({name:''})
+    const [allStatuses,setAllStatuses]= useState([])
     const[formData,setFormData]= useState({})
     const[modalTitle,setModalTitle]=useState('');
 
     useEffect(async()=>{
         await dispatchProject({type:httpProjectAction.GET,payload:params})
         let foundspace=spaces.find((space)=>(space._id.toString()===params.space_id.toString()))
+        
         if (foundspace) {
-            setprojectListSpace({name:foundspace.name})
+            console.log(foundspace)
+            setprojectListSpace({name:foundspace.name,...foundspace})
+            setAllStatuses([...projectListSpace.custom_statuses,projectListSpace.default_statuses])
+            console.log(allStatuses);
         }
        
 
-    },[params])
+    },[params,setprojectListSpace])
    
 
 
@@ -40,7 +45,7 @@ const ProjectMenu = () => {
             <div className="border-top border-bottom p-2  d-flex flex-column flex-wrap  align-items-start ">
             <div className="my-2 d-flex flex-row align-items-center">
                 <h6 className="">Projects on {projectListSpace.name} </h6>
-                <ModalButton modalFormId='projectmenu' text='+ New' onClick={()=>{setFormData({name:''});setModalTitle('New Project')}}/>
+                <ModalButton modalFormId='projectmenu' text='+ New' onClick={()=>{setFormData({name:'',active_status_template:allStatuses||[]});setModalTitle('New Project')}}/>
             </div>
             <ModalForm  modalFormId='projectmenu' onSubmit={(data)=>{ handleDataSubmit(data)}} modalTitle={modalTitle} inputData={formData} />
 

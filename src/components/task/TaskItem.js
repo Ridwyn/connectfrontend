@@ -12,7 +12,7 @@ const TaskItem = ({task}) => {
 
     return (
 
-        <button className="card m-3" onClick={handleTaskClick}>
+        <button className="card m-3 mx-auto" onClick={handleTaskClick}>
             <div className="card-body p-2">
                 <p className=" card-title">{task.name}</p>
                 <div>

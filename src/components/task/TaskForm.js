@@ -5,7 +5,7 @@ import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 import { ProjectContext,httpProjectAction} from "../../context/ProjectContext"
 import JoditEditor from "jodit-react"; 
 import TaskCommentForm from './TaskCommentForm';
-import {saveTask,getTaskItem} from '../../actions/task'
+import {saveTask,getTaskItem,sseTaskUpdate} from '../../actions/task'
 
 const TaskForm = () => {
   const [formData,setFormData] = useState({});
@@ -19,6 +19,7 @@ const TaskForm = () => {
   const history = useHistory();
 
   useEffect (()=>{
+    
     const space = spaces.find(space => String(space._id === String(space_id)))
     const project = projects.find(project => String(project._id)===String(project_id))
 
@@ -56,7 +57,12 @@ const TaskForm = () => {
     }
 
 
-      
+    // console.log(sseTaskUpdate({task_id:task_id,start:'yes'}));
+    
+    // WHEN COMPONENT UNMOUNTS
+    return()=>{
+      // sseTaskUpdate({task_id:'',start:''})
+    }
 
   },[projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers])
 
