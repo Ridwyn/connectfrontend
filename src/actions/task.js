@@ -15,7 +15,7 @@ export const getTaskItem = async(payload) =>{
     return res.data
 };
 export const deleteTaskItem = async(payload) =>{
-    let res = await  axios.post(`${server}/api/task/deleteItem`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
+    let res = await  axios.post(`${server}/api/task/deleteItem/${payload._id}`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
 

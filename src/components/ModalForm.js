@@ -73,10 +73,13 @@ const ModalForm = ({modalTitle,onSubmit,inputData,modalFormId,placeholders={},er
                             Object.entries(inputData).map(([key,value], index)=>{
                                 let element=null;
                                 if (key=='active_status_template') {
-                                   element =<select className="form-select" id={key} name="active_status_template" onChange={changeInput} >
+                                   element =<select className="form-select" id={key} name="active_status_template" onChange={changeInput} required>
+                                        <option value='' className='fw-light'>please select</option>
                                         {
-                                            value.map(({_id,name})=>(
-                                                <option value={_id}>{name}</option>
+                                            value.map(({_id,name},key)=>(
+                                                
+                                               key==0 ? <option  value={_id}> { name + key}</option>:
+                                                <option value={_id}>{name+ key}</option>
                                             ))
                                         }
                                         </select> 

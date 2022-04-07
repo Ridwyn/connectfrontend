@@ -29,8 +29,8 @@ const SpaceMenu = () => {
         <div className="border-top border-bottom p-2  d-flex flex-column flex-wrap  align-items-start ">
             <div className="my-2 d-flex flex-row align-items-center">
                 <h6 className="">Spaces</h6>
-                <ModalButton modalFormId='spacemenu' text='+ New' onClick={()=>{setFormData({name:''});setModalTitle('New Space')}}/>
-                <ModalButton modalFormId='spacemenu' text='<i class="fas fa-handshake"></i> Join '  onClick={()=>{setFormData({join_code:''});setModalTitle('Join A Space')}}/>
+                <ModalButton className='m-2' modalFormId='spacemenu' text='+ New' onClick={()=>{setFormData({name:''});setModalTitle('New Space')}}/>
+                <ModalButton className='m-2' modalFormId='spacemenu' text='<i class="fas fa-handshake"></i> Join '  onClick={()=>{setFormData({join_code:''});setModalTitle('Join A Space')}}/>
             </div>
             <ModalForm  modalFormId='spacemenu' onSubmit={(data)=>{ handleDataSubmit(data)}} modalTitle={modalTitle} inputData={formData} />
 

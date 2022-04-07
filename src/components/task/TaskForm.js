@@ -5,9 +5,13 @@ import { SpaceContext , httpSpaceAction} from "../../context/SpaceContext"
 import { ProjectContext,httpProjectAction} from "../../context/ProjectContext"
 import JoditEditor from "jodit-react"; 
 import TaskCommentForm from './TaskCommentForm';
-import {saveTask,getTaskItem,sseTaskUpdate} from '../../actions/task'
+import {saveTask,getTaskItem,deleteTaskItem,sseTaskUpdate} from '../../actions/task'
+import ModalForm from '../ModalForm'
+import ModalButton from '../ModalButton'
 
 const TaskForm = () => {
+  const[modalTitle,setModalTitle]=useState('');
+  const [errors,setErrors]=useState({})
   const [formData,setFormData] = useState({});
   const [statusTemplate,setStatusTemplate] = useState({})
   const [taskFormData,setTaskFormData]= useState({});
@@ -19,6 +23,7 @@ const TaskForm = () => {
   const history = useHistory();
 
   useEffect (()=>{
+    console.log(task_id)
     
     const space = spaces.find(space => String(space._id === String(space_id)))
     const project = projects.find(project => String(project._id)===String(project_id))
@@ -48,6 +53,7 @@ const TaskForm = () => {
     }else{
       setTaskFormData({
         // ...taskFormData,
+        assignees:[],
         created_at:(new Date(Date.now() )).toISOString(),
         created_by:JSON.parse(localStorage.getItem('user'))._id,
         workspace:space_id,
@@ -56,15 +62,13 @@ const TaskForm = () => {
       })
     }
 
-
-    // console.log(sseTaskUpdate({task_id:task_id,start:'yes'}));
     
     // WHEN COMPONENT UNMOUNTS
     return()=>{
       // sseTaskUpdate({task_id:'',start:''})
     }
 
-  },[projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers])
+  },[projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers,setTaskFormData])
 
   
  
@@ -96,31 +100,65 @@ const TaskForm = () => {
     if (key ==='assignees') {
       let selectedOpts=e.target.selectedOptions
       const values= Array.from(selectedOpts).map(({ value }) => value);
-      data[key]=Array.from(new Set([...taskFormData.assignees.map(assignee=>{return assignee._id}), ...values]));
+      
+      if (taskFormData.assignees.length !=0) {
+         data[key]=Array.from(new Set([...taskFormData.assignees.map(assignee=>{return assignee._id}), ...values]));
+        setTaskFormData({...taskFormData,...data})
+      }
+      data[key]=Array.from(new Set([...values]));
       setTaskFormData({...taskFormData,...data})
     }
 
   }
+
+  // After submitting the task
   const handleFormSubmit =(e)=>{
     e.preventDefault();
 
    saveTask(taskFormData).then((data)=>{console.log(data)})
-   history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
+  //  history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
+   history.push(RouterPaths().TaskMenu.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
   }
 
   const removeAssignee = (assignee_id) =>{
     // Filter the assignee and transform the taskform data
     let data={assignees:taskFormData.assignees.filter(assignee=>(String(assignee._id ))!= String(assignee_id))}
-    setTaskFormData({...taskFormData,...data})
-    saveTask(taskFormData).then((data)=>{console.log(data)})
+    setTaskFormData({...taskFormData,assignees:data.assignees})
+    saveTask({...taskFormData,assignees:data.assignees}).then((data)=>{console.log(data)})
     history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
  
+  }
+
+  const checkLeaveDeleteInput=(obj)=>{
+    let bol=false;
+    if (obj.hasOwnProperty('Delete Task') && obj['Delete Task'] === 'del') {
+        setErrors({})            
+    }else if(obj.hasOwnProperty('Delete Task') && obj['Delete Task'] !== 'del'){
+        setErrors({'Delete Task':'Invalid! Enter Lowercase del'})
+        bol=true;
+    }
+    return bol
+  }
+
+  const handleIsErrorCheck =(submittedData)=>{
+    console.log(submittedData)
+    return checkLeaveDeleteInput  (submittedData);
+    
+  }
+  
+  const handleTaskDelete = async(data) =>{
+    
+    if (Object.keys(errors).length === 0) {
+      await deleteTaskItem({_id:task_id})
+      history.push(RouterPaths().TaskMenu.urlPathText({space_id:space_id,project_id:project_id}))
+
+    }
   }
 
 
     return (
         <>
-        <section className="task col my-4 p-2 ">
+        <section className="task col my-4 p-2 " style={{position:'relative'}}>
           <div className="task-header row justify-content-between">
             <div className="p-1 col">
               <span className="fw-light">Status:</span>
@@ -157,6 +195,7 @@ const TaskForm = () => {
           </div> 
 
           <div className="task-body row">
+            
             <form className="col px-4" id="taskform" encType="multipart/form-data" onSubmit={handleFormSubmit}>
                 <p>Tags:
                   Bug, Sprint22
@@ -229,16 +268,33 @@ const TaskForm = () => {
 
            
 
-              <div className="my-3">
+              {/* <div className="my-3">
                 <label className="fw-light">Attachments/files: </label>
                 <input multiple="" type="file" name="attachments"/>
-              </div>
-               <input 
-               type="submit" 
-                value="Save"/>
+              </div> */}
 
+              <div className=''>
+                
+
+              </div>
+              
+              <input  type="submit" className='p-1'    value="Save"/>
             </form>
 
+              <span className='' 
+              style={{bottom:'0', right:'0', width:'100px', position:'absolute', zIndex:1}}
+              >
+                {
+                  task_id !== 'undefined' &&
+                  <ModalButton className='m-2 btn btn-outline-danger p-1' modalFormId='task' text='Delete' onClick={()=>{setFormData({name:''});setModalTitle('Delete this Task')}}/>                                    
+                }
+                
+                <ModalForm  modalFormId='task' onSubmit={(data)=>{ handleTaskDelete(data)}} modalTitle={modalTitle} inputData={{'Delete Task':''}} placeholders={{'Delete Task': 'type del'}} errors={errors} isError={(submittedData)=>{return handleIsErrorCheck(submittedData)}}/>
+
+
+              </span>
+
+               
 
           </div>
 

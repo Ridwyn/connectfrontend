@@ -11,7 +11,7 @@ export const getProjectList = async(payload) =>{
     return res.data
 };
 export const deleteProjectItem = async(payload) =>{
-    let res = await  axios.post(`${server}/api/project/deleteItem`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
+    let res = await  axios.post(`${server}/api/project/deleteItem/${payload._id}`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
 

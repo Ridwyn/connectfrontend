@@ -26,7 +26,7 @@ const StatusTemplatesView = () => {
                 currentSpace.custom_statuses?
                 currentSpace.custom_statuses.map((status_template,index)=>(
                 
-                    <div className="accordion my-3" id="accordionExample">
+                    <div className="accordion my-3" id="accordionExample" key={index}>
                         <div className="accordion-item">
                             <h2 className="accordion-header" id="headingOne">
                             <button className="accordion-button" type="button" 
@@ -46,7 +46,7 @@ const StatusTemplatesView = () => {
                             <div className="accordion-body p-2">
                                {
                                    status_template.statuses.map((status)=>(
-                                    <span className="badge p-2 m-2 " style={{backgroundColor:status.color}}>{status.status}</span>
+                                    <span   className="badge p-2 m-2 " style={{backgroundColor:status.color}}>{status.status}</span>
                                    ))
                                }
                             
