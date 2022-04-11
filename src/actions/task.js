@@ -2,6 +2,7 @@ import server from '../config/index'
 import axios  from 'axios';
 
 
+
 export const saveTask = async(payload) =>{
     let res = await    axios.post(`${server}/api/task/saveTask`,payload,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
@@ -14,10 +15,16 @@ export const getTaskItem = async(payload) =>{
     let res = await  axios.get(`${server}/api/task/getItem/${payload._id}`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
+export const searchTasks = async(payload) =>{
+    let res = await  axios.get(`${server}/api/task/search?term=${payload.search_term}`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
+    return res.data
+};
 export const deleteTaskItem = async(payload) =>{
     let res = await  axios.post(`${server}/api/task/deleteItem/${payload._id}`,{headers:{authorization:localStorage.getItem('token').split('"')[1]}})
     return res.data
 };
+
+
 
 // DO SSE FETCHING HERE
 export const sseTaskUpdate = async(payload) =>{

@@ -10,6 +10,17 @@ import ModalForm from '../ModalForm'
 import ModalButton from '../ModalButton'
 
 const TaskForm = () => {
+
+  
+  const ws = new WebSocket(`ws://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+  // console.log(ws)
+  ws.onmessage=(event)=>{
+    console.log(event)
+  }
+  
+
+
+
   const[modalTitle,setModalTitle]=useState('');
   const [errors,setErrors]=useState({})
   const [formData,setFormData] = useState({});
@@ -23,7 +34,12 @@ const TaskForm = () => {
   const history = useHistory();
 
   useEffect (()=>{
-    console.log(task_id)
+    if (ws.readyState==1) {
+      ws.send({action:'ASSIGNEE_ADD',data:{}})
+      ws.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+    });
+    }
     
     const space = spaces.find(space => String(space._id === String(space_id)))
     const project = projects.find(project => String(project._id)===String(project_id))
@@ -68,7 +84,7 @@ const TaskForm = () => {
       // sseTaskUpdate({task_id:'',start:''})
     }
 
-  },[projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers,setTaskFormData])
+  },[ws.readyState,projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers,setTaskFormData])
 
   
  
@@ -100,13 +116,16 @@ const TaskForm = () => {
     if (key ==='assignees') {
       let selectedOpts=e.target.selectedOptions
       const values= Array.from(selectedOpts).map(({ value }) => value);
+
+      const members ={'members':values}
       
       if (taskFormData.assignees.length !=0) {
          data[key]=Array.from(new Set([...taskFormData.assignees.map(assignee=>{return assignee._id}), ...values]));
-        setTaskFormData({...taskFormData,...data})
+          members.members=Array.from(new Set([...taskFormData.assignees.map(assignee=>{return assignee._id}), ...values]));
+         setTaskFormData({...taskFormData,...data,...members})
       }
       data[key]=Array.from(new Set([...values]));
-      setTaskFormData({...taskFormData,...data})
+      setTaskFormData({...taskFormData,...data,...members})
     }
 
   }
@@ -123,7 +142,7 @@ const TaskForm = () => {
   const removeAssignee = (assignee_id) =>{
     // Filter the assignee and transform the taskform data
     let data={assignees:taskFormData.assignees.filter(assignee=>(String(assignee._id ))!= String(assignee_id))}
-    setTaskFormData({...taskFormData,assignees:data.assignees})
+    setTaskFormData({...taskFormData,assignees:data.assignees,members:data.assignees})
     saveTask({...taskFormData,assignees:data.assignees}).then((data)=>{console.log(data)})
     history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
  

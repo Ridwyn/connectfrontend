@@ -15,6 +15,7 @@ const TaskView = React.lazy(() => import('./task/TaskView'))
 const TaskForm = React.lazy(() => import('./task/TaskForm'))
 const StatusTemplateForm = React.lazy(() => import('./status/StatusTemplateForm'))
 const StatusTemplatesView = React.lazy(() => import('./status/StatusTemplatesView'))
+const SearchPage = React.lazy(() => import('./SearchPage'))
 
 
 
@@ -25,6 +26,13 @@ const RouterPaths=()=>{
                'urlPathText':'/dashboard',
                'plainPathText':'/dashboard'
            },
+           'SearchPage':{
+            'component':SearchPage,
+            'urlPathText':function ({search_term}) {
+                return `/dashboard/search?term=${search_term}`
+            },
+            'plainPathText':'/dashboard/search',
+            },
            'ProjectMenu':{
                 'component':
                 ProjectMenu,
@@ -69,6 +77,7 @@ const RouterPaths=()=>{
                 },
                 'plainPathText':'/dashboard/space/:space_id/StatusTemplatesView',
             },
+           
     }
 
     return paths

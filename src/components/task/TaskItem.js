@@ -9,7 +9,7 @@ const TaskItem = ({task}) => {
 
     }
     useEffect(() => {
-      console.log(task);
+    //   console.log(task);
     
       return () => {
         
