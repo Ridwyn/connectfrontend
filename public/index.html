@@ -46,5 +46,31 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <span id="#notif" class="badge bg-dark p-2" style='position:absolute;top:50px; right:0; visibility:hidden;'>
+      {updatedTask.name} has being updated
+  </span>
+
+    <script >
+      let notif = document.getElementById('#notif')
+
+      let ws = new WebSocket(`${window.location.protocol==='https:'? 'wss': 'ws'}://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+      ws.addEventListener('message',()=>{
+        let res = JSON.parse(event.data)
+        console.log(res)
+        if (res.action ==='ASSIGNEE_ADD') {
+            notif.innerHTML=`${res.data[0].name} has being updated`;
+            notif.style.visibility='visible';
+            setTimeout(()=>{
+              notif.style.visibility='hidden'
+            },2000)
+            console.log(res.data);
+            console.log('add')
+        }
+      })
+      
+  
+
+
+    </script>
   </body>
 </html>

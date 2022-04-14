@@ -11,6 +11,8 @@ import Nav_Hompage from './components/NavLoggedIn'
 
 function App() {
 
+  
+
   return (
     <Router>
       <LoginProvider>

@@ -8,24 +8,15 @@ import TaskCommentForm from './TaskCommentForm';
 import {saveTask,getTaskItem,deleteTaskItem,sseTaskUpdate} from '../../actions/task'
 import ModalForm from '../ModalForm'
 import ModalButton from '../ModalButton'
+import {ws} from '../../actions/websocket'
 
 const TaskForm = () => {
-
-  
-  const ws = new WebSocket(`ws://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
-  // console.log(ws)
-  ws.onmessage=(event)=>{
-    console.log(event)
-  }
-  
-
-
 
   const[modalTitle,setModalTitle]=useState('');
   const [errors,setErrors]=useState({})
   const [formData,setFormData] = useState({});
   const [statusTemplate,setStatusTemplate] = useState({})
-  const [taskFormData,setTaskFormData]= useState({});
+  const [taskFormData,setTaskFormData]= useState({assignees:[]});
   const [spaceMembers,setSpaceMembers]= useState([]);
   const editor = useRef(null);
   const [spaces,dispatchSpace]= useContext(SpaceContext);
@@ -33,13 +24,13 @@ const TaskForm = () => {
   const {space_id,project_id,task_id} = useParams();
   const history = useHistory();
 
+
+  
+
+
   useEffect (()=>{
-    if (ws.readyState==1) {
-      ws.send({action:'ASSIGNEE_ADD',data:{}})
-      ws.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
-    });
-    }
+
+   
     
     const space = spaces.find(space => String(space._id === String(space_id)))
     const project = projects.find(project => String(project._id)===String(project_id))
@@ -84,8 +75,31 @@ const TaskForm = () => {
       // sseTaskUpdate({task_id:'',start:''})
     }
 
-  },[ws.readyState,projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers,setTaskFormData])
+  },[,projects,statusTemplate,getTaskItem,dispatchProject,spaceMembers,setSpaceMembers,setTaskFormData])
 
+
+
+  // //WEBSOCKET TRANSACTIONS
+  useEffect(async () => {
+
+
+    console.log(ws)
+  
+
+      ws.onmessage=(event)=>{
+      let res = JSON.parse(event.data)
+      console.log(res)
+      if (res.action ==='ASSIGNEE_ADD') {
+          console.log(res.data);
+          console.log('add')
+      }
+    }
+  
+    return () => {
+      
+    }
+  }, [ws.onmessage])
+  
   
  
 
@@ -135,14 +149,21 @@ const TaskForm = () => {
     e.preventDefault();
 
    saveTask(taskFormData).then((data)=>{console.log(data)})
+
+  //  WEBSOCKET
+   ws.send(JSON.stringify({action:'ASSIGNEE_ADD',data:taskFormData}))
   //  history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
    history.push(RouterPaths().TaskMenu.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
   }
 
   const removeAssignee = (assignee_id) =>{
+        // WEBSOCKET
+        ws.send(JSON.stringify({action:'ASSIGNEE_ADD',data:taskFormData}))
+
     // Filter the assignee and transform the taskform data
     let data={assignees:taskFormData.assignees.filter(assignee=>(String(assignee._id ))!= String(assignee_id))}
     setTaskFormData({...taskFormData,assignees:data.assignees,members:data.assignees})
+
     saveTask({...taskFormData,assignees:data.assignees}).then((data)=>{console.log(data)})
     history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
  

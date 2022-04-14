@@ -139,8 +139,13 @@ const SpaceItem = ({space}) => {
                                :''
                            }
                        </li>
+                       
                        <li>
                             <button onClick={hadnleOnClickTemplates}>Custom Templates</button>
+                       </li>
+                       <li >
+                          <span className='badge' title='Join Code'>{space.join_code}</span> 
+                          
                        </li>
                    </ul>
                </div>
