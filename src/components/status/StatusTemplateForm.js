@@ -12,8 +12,9 @@ const StatusTemplateForm = () => {
     useEffect(async()=>{
         console.log(template_id);
        const space = await getSpaceItem({_id:space_id});
+       console.log(space)
        const [custom_status]=space.custom_statuses.filter(({_id})=>(String(_id ))== String(template_id))
-       
+       console.log(custom_status)
         if (custom_status) {
            setStatuses(custom_status.statuses)
            setTemplateName(custom_status.name)

@@ -46,7 +46,7 @@ const StatusTemplatesView = () => {
                             <div className="accordion-body p-2">
                                {
                                    status_template.statuses.map((status)=>(
-                                    <span   className="badge p-2 m-2 " style={{backgroundColor:status.color}}>{status.status}</span>
+                                    <span className="badge p-2 m-2 " style={{backgroundColor:status.color}}>{status.status}</span>
                                    ))
                                }
                             

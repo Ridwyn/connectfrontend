@@ -3,6 +3,7 @@ import {Link,useHistory} from 'react-router-dom'
 import Search from './Search'
 import Logout from './Logout'
 import RouterPaths from './RouterPaths'
+import { ws } from '../actions/websocket'
 
 
 import {getAssignedTasks} from '../actions/task'
@@ -26,6 +27,14 @@ const NavLoggedIn = () => {
        const res= await getAssignedTasks();
        setAssignedTasks(res)
     },[])
+
+
+    useEffect(() => {
+      console.log('message')
+    
+     
+    }, [ws.onmessage])
+    
 
     const handleTaskClick =(task)=>{
         history.push(RouterPaths().TaskForm.urlPathText({space_id:task.workspace,project_id:task.project,task_id:task._id}));
