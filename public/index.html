@@ -53,16 +53,16 @@
     <script >
       let notif = document.getElementById('#notif')
     // For prod 
-    let ws1 = new WebSocket(`ws://d6e4eef.online-server.cloud/app/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+    let ws1 = new WebSocket(`ws://connect-task-mangement.herokuapp.com/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
       ws1.onopen=()=>{
         console.log('open from index')
         console.log(ws1)
       }
       ws1.onclose=()=>{
-        ws1 = new WebSocket(`ws://d6e4eef.online-server.cloud/app/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+        ws1 = new WebSocket(`ws://connect-task-mangement.herokuapp.com/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
       }
       ws1.onerror=()=>{
-        ws1 = new WebSocket(`ws://d6e4eef.online-server.cloud/app/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+        ws1 = new WebSocket(`ws://connect-task-mangement.herokuapp.com/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
       }
       
 

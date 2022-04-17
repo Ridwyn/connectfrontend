@@ -1,4 +1,4 @@
-import server from '../config/index'
+import server,{socketuri} from '../config/index'
 import axios  from 'axios';
 
 
@@ -6,7 +6,7 @@ import axios  from 'axios';
 export const wsInit = (payload) =>{
 
       // WEBSOCKET STUUF HERE
-        let ws = new WebSocket(`${window.location.protocol==='https:'? 'wss': 'ws'}://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+        let ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
         // console.log(ws) 
         // ALWAYS STRINGIFY DATA
         // ws.onmessage=(event)=>{
@@ -31,12 +31,12 @@ export const wsInit = (payload) =>{
 
         ws.onclose= ()=>{
         console.log('wesocket ios closed')
-        ws = new WebSocket(`ws://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+        ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
         }
 
         ws.onerror =()=>{
         console.log('wesocket error')
-        ws = new WebSocket(`ws://localhost:4000/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+        ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
         }
 
     return ws
