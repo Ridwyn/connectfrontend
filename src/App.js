@@ -15,7 +15,7 @@ function App() {
   
 
   return (
-    <Router>
+    <Router basename='https://meek-taiyaki-5f6540.netlify.app/index.html'>
       <LoginProvider>
         <Layout>
           <Switch >
