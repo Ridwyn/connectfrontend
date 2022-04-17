@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "homepage":"https://connectfrontend.vercel.app/",
+  "homepage":"https://connectfrontend.onrender.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
