@@ -39,6 +39,22 @@ export const wsInit = (payload) =>{
         ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
         }
 
+        function startConn(){
+          let interval =null
+          ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+          if (ws.readyState===1) {
+            clearInterval(interval);
+            return true
+          }else{
+           interval= setInterval(()=>{
+              ws = new WebSocket(`${socketuri}/ws/task?token=${localStorage.getItem('token').split('"')[1]}`);
+            },4000)
+          }
+        }
+        ws.connect=()=>{
+         return startConn()
+        }
+
     return ws
 };
 

@@ -145,12 +145,13 @@ const TaskForm = () => {
   }
 
   // After submitting the task
-  const handleFormSubmit =(e)=>{
+  const handleFormSubmit =async(e)=>{
     e.preventDefault();
 
    saveTask(taskFormData).then((data)=>{console.log(data)})
 
   //  WEBSOCKET
+    console.log(ws.connect())
    ws.send(JSON.stringify({action:'ASSIGNEE_ADD',data:taskFormData}))
   //  history.push(RouterPaths().TaskForm.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
    history.push(RouterPaths().TaskMenu.urlPathText({space_id:space_id,project_id:project_id,task_id:task_id}))
