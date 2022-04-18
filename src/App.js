@@ -15,7 +15,7 @@ function App() {
   
 
   return (
-    <Router basename='/connectfrontend'>
+    <Router >
       <LoginProvider>
         <Layout>
           <Switch >
