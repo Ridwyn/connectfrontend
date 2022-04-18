@@ -12,10 +12,10 @@ import Signup from './components/Signup'
 
 function App() {
 
-  console.log(window.location.pathname);
+  
 
   return (
-    <Router basename={window.location.pathname || ''}>
+    <Router basename='/'>
       <LoginProvider>
         <Layout>
           <Switch >
