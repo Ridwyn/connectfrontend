@@ -15,7 +15,7 @@ function App() {
   
 
   return (
-    <Router basename='/connectfrontend'>
+    <Router basename='https://ridwyn.github.io/connectfrontend'>
       <LoginProvider>
         <Layout>
           <Switch >
